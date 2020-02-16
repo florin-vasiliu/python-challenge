@@ -8,7 +8,7 @@ cvspath_read=os.path.join("Resources","houston_election_data.csv")
 #accrual of total_votes
 candidate_table={}
 total_votes=0
-with open(cvspath_read,"r") as csvfile:
+with open(cvspath_read,"r",encoding="UTF-8") as csvfile:
     csvreader=csv.reader(csvfile,delimiter=",")
     header=next(csvreader)
     for row in csvreader:
@@ -19,6 +19,7 @@ with open(cvspath_read,"r") as csvfile:
             for key in candidate_table.keys():
                 if key==row[0]:
                     candidate_table[key]+=1
+
 
 #Sort by number of votes
 sorted_candidate_tuples=sorted(candidate_table.items(), key=lambda candidate: candidate[1],reverse=True)
@@ -39,11 +40,10 @@ print(f"""
 -----------------------------------------""")
 
 #Write into file Results.csv
-cvspath_write=os.path.join("Resources","Results.csv")
+cvspath_write=os.path.join("Results.csv")
 with open(cvspath_write,"w",newline='') as csvfile:
     csvwriter=csv.writer(csvfile,delimiter=",")
     csvwriter.writerow(["Candidate Name","Total Votes[#]","Total Votes[%]"])
     for row in sorted_candidate_tuples:
         csvwriter.writerow([row[0],row[1],round(int(row[1])/total_votes*100,2)])
         print([row[0],row[1],round(int(row[1])/total_votes*100,2)])
-
